@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: jilid-dua
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm run db:init && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jilid-dua-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: "false"
+
+databases:
+  - name: jilid-dua-db
+    databaseName: jilid_dua
+    user: jilid_dua
+    plan: free
