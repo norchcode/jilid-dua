@@ -38,6 +38,19 @@ function createApp(db) {
     res.json({ status: "ok" });
   });
 
+  // Temporary migration endpoint — remove after data migration is done
+  api.post("/migrate", asyncHandler(async (req, res) => {
+    const token = req.headers["x-migrate-token"];
+    if (!token || token !== (process.env.MIGRATE_TOKEN || "migrate-jilid-2026")) {
+      return res.status(403).json({ error: "forbidden" });
+    }
+    res.json({ status: "migration started — watch Render logs for progress" });
+    const { migrate } = require("../scripts/stream-migrate");
+    migrate((counts) => console.log("[migrate] progress:", JSON.stringify(counts)))
+      .then((result) => console.log("[migrate] done:", JSON.stringify(result)))
+      .catch((err) => console.error("[migrate] failed:", err.message));
+  }));
+
   api.get(
     "/bootstrap",
     asyncHandler(async (_req, res) => {
