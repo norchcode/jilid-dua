@@ -235,3 +235,4 @@ window.AuditMap = (() => {
 
   return { render, refresh, closePopup: clearHover };
 })();
+

@@ -382,7 +382,7 @@
     renderKpiCards([
       { label: "Total Potensi Pemborosan", value: "-", sublabel: "Backend belum siap" },
       { label: "Paket Prioritas Audit", value: "-", sublabel: "Periksa ingest hasil analyze" },
-      { label: "Total Pagu Teraudit", value: "-", sublabel: "Jalankan inisialisasi database bila perlu" },
+      { label: "Total Pagu Teraudit", value: "-", sublabel: "Ulangi db:reset bila perlu" },
       { label: "Paket Terpetakan", value: "-", sublabel: "Map belum dapat dibuat" },
     ]);
     renderSidebarMessage(`Gagal memuat dashboard audit: ${error}`, true);
@@ -1408,3 +1408,4 @@
   bindEvents();
   bootstrap();
 })();
+

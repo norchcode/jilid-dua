@@ -5,5 +5,8 @@
 backend/data/
 backend/dataset/
 
+# Environment variables
+**/.env
+
 # macOS
 .DS_Store
