@@ -44,9 +44,10 @@ function createApp(db) {
     if (!token || token !== (process.env.MIGRATE_TOKEN || "migrate-jilid-2026")) {
       return res.status(403).json({ error: "forbidden" });
     }
-    res.json({ status: "migration started — watch Render logs for progress" });
+    const skipTables = req.query.skip ? req.query.skip.split(",").map(s => s.trim()) : [];
+    res.json({ status: "migration started", skipping: skipTables });
     const { migrate } = require("../scripts/stream-migrate");
-    migrate((counts) => console.log("[migrate] progress:", JSON.stringify(counts)))
+    migrate((counts) => console.log("[migrate] progress:", JSON.stringify(counts)), skipTables)
       .then((result) => console.log("[migrate] done:", JSON.stringify(result)))
       .catch((err) => console.error("[migrate] failed:", err.message));
   }));

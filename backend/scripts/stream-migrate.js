@@ -78,7 +78,8 @@ async function flushBatch(client, table, batch, errors) {
   }
 }
 
-async function migrate(onProgress) {
+async function migrate(onProgress, skipTables = []) {
+  const skipSet = new Set(skipTables);
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : false,
@@ -104,6 +105,7 @@ async function migrate(onProgress) {
       if (!parsed) continue;
 
       const { table, values } = parsed;
+      if (skipSet.has(table)) continue;
       counts[table] = (counts[table] || 0) + 1;
 
       // Flush batch when table changes or batch is full
